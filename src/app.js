@@ -1,8 +1,10 @@
 // Express framework
 import express from 'express';
+
 // Routes
 import taskRoutes from './router/tasks.routes.js';
 import authRoutes from './router/auth.routes.js';
+
 // Libraries
 import morgan from 'morgan';
 
@@ -17,7 +19,6 @@ app.use(express.urlencoded({extended: false}));
 
 // Define a route for the root URL
 app.get('/', (req, res) => {
-    // Response
     res.json({message: 'Welcome to my Project!'})
 });
 
