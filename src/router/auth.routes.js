@@ -1,5 +1,6 @@
-import { Router } from "express";
-import { signUp, signIn, signOut, getProfile } from "../controllers/auth.controller.js";
+import Router from 'express-promise-router';
+import { signUp, signIn, signOut, getProfile } from '../controllers/auth.controller.js';
+import isAuth from '../middlewares/auth.middleware.js';
 
 const router = Router();
 
@@ -10,6 +11,6 @@ router.post('/signin', signIn);
 
 router.post('/signout', signOut);
 
-router.get('/profile', getProfile);
+router.get('/profile', isAuth, getProfile);
 
 export default router;

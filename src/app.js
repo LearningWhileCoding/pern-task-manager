@@ -7,13 +7,14 @@ import authRoutes from './router/auth.routes.js';
 
 // Libraries
 import morgan from 'morgan';
-
+import cookieParser from 'cookie-parser';
 
 // Create an Express application
 const app = express();
 
 // Middleware for logs
 app.use(morgan('dev'));
+app.use(cookieParser());  
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 
