@@ -5,14 +5,14 @@ const isAuth = (req, res, next) => {
 
     if(!token) {
         return res.status(401).json({
-            message: 'Acces unauthorized'
+            message: 'Access unauthorized'
         })
     }
 
     jwt.verify(token, 'xyz123', (err, decoded) => {
         if(err) {
             return res.status(401).json({
-                message: 'Acces unauthorized'
+                message: 'Access unauthorized'
             });
         }
 
