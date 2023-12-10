@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import { Card, Input, Button, Label } from "../ui/Index";
+import { Card, Input, Button, Label, Container } from "../ui/Index";
 
 function SignUp() {
   const {
@@ -20,7 +20,7 @@ function SignUp() {
   });
 
   return (
-    <div className="h-[calc(100vh-64px)] flex items-center justify-center">
+    <Container className="h-[calc(100vh-10rem)] flex items-center justify-center">
       <Card>
         {signUpErrors &&
           signUpErrors.map((error) => (
@@ -73,7 +73,7 @@ function SignUp() {
           <Link to="/signin">Sign In</Link>
         </div>
       </Card>
-    </div>
+    </Container>
   );
 }
 
