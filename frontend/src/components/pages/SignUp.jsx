@@ -23,8 +23,8 @@ function SignUp() {
     <Container className="h-[calc(100vh-10rem)] flex items-center justify-center">
       <Card>
         {signUpErrors &&
-          signUpErrors.map((error) => (
-            <p key={error} className="bg-red-500 text-center p-2">
+          signUpErrors.map((error, i) => (
+            <p key={i} className="bg-red-500 text-center p-2">
               {error}
             </p>
           ))}

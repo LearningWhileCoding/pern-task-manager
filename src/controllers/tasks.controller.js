@@ -1,7 +1,6 @@
 import pool from "../db.js";
 
 const getTasks = async (req, res) => {
-  console.log(req.userId);
   const result = await pool.query("SELECT * FROM tasks WHERE user_id = $1", [
     req.userId,
   ]);
@@ -29,14 +28,13 @@ const createTask = async (req, res, next) => {
       [title, description, req.userId]
     );
     res.json(result.rows[0]);
-    console.log(result.rows[0]);
   } catch (error) {
     if (error.code === "23505") {
       return res.status(409).json({
         message: "Already exists a task with that title",
       });
     }
-    console.log(error);
+    console.error(error);
     next(error);
   }
 };

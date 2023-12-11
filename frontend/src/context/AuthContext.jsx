@@ -25,7 +25,7 @@ export function AuthProvider({ children }) {
       setIsAuth(true);
       return res.data;
     } catch (error) {
-      console.log(error.message);
+      console.error(error.message);
       if (Array.isArray(error.response.data)) {
         return setErrors(error.response.data);
       }
@@ -41,11 +41,26 @@ export function AuthProvider({ children }) {
       setIsAuth(true);
       return res.data;
     } catch (error) {
-      console.log(error.message);
+      console.error(error.message);
       if (Array.isArray(error.response.data)) {
         return setErrors(error.response.data);
       }
 
+      setErrors([error.response.data.message]);
+    }
+  };
+
+  const signOut = async () => {
+    try {
+      const res = await axios.post("/signout");
+      setUser(null);
+      setIsAuth(false);
+      return res.data;
+    } catch (error) {
+      console.error(error.message);
+      if (Array.isArray(error.response.data)) {
+        return setErrors(error.response.data);
+      }
       setErrors([error.response.data.message]);
     }
   };
@@ -61,7 +76,7 @@ export function AuthProvider({ children }) {
         .catch((error) => {
           setUser(null);
           setIsAuth(false);
-          console.log(error);
+          console.error(error);
         });
     }
   }, []);
@@ -75,6 +90,7 @@ export function AuthProvider({ children }) {
         signUp,
         setUser,
         signIn,
+        signOut
       }}
     >
       {children}
