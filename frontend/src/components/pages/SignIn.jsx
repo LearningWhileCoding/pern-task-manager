@@ -16,7 +16,7 @@ function SignIn() {
   const onSubmit = handleSubmit(async (data) => {
     const user = await signIn(data);
     if (user) {
-      navigate("/profile");
+      navigate("/tasks");
     }
   });
 
@@ -33,6 +33,9 @@ function SignIn() {
 
         <form onSubmit={onSubmit}>
           <Label htmlFor="email">Email</Label>
+          {errors.email && (
+            <p className="text-red-500">Email is required</p>
+          )}
           <Input
             type="email"
             placeholder="Your email"
@@ -41,6 +44,9 @@ function SignIn() {
           />
 
           <Label htmlFor="password">Password</Label>
+          {errors.password && (
+            <p className="text-red-500">Password is required</p>
+          )}
           <Input
             type="password"
             placeholder="Your password"

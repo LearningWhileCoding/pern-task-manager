@@ -16,7 +16,7 @@ function SignUp() {
 
   const onSubmit = handleSubmit(async (data) => {
     await signUp(data);
-    navigate("/profile");
+    navigate("/tasks");
   });
 
   return (

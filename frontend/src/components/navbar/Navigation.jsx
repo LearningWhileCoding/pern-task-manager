@@ -1,3 +1,6 @@
+import { FaTasks, FaPlusCircle } from "react-icons/fa";
+
+
 export const publicRoutes = [
   {
     name: "Sign In",
@@ -17,17 +20,11 @@ export const privateRoutes = [
   {
     name: "Tasks",
     path: "/tasks",
+    icon: <FaTasks />,
   },
   {
-    name: "Create Task",
+    name: "New",
     path: "/tasks/create",
-  },
-  {
-    name: "Update Task",
-    path: "/tasks/edit/:id",
-  },
-  {
-    name: "Profile",
-    path: "/profile",
+    icon: <FaPlusCircle />,
   },
 ];

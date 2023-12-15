@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { useTasks } from "../../context/TasksContext";
 import { Card, Input, TextArea, Label, Button } from "../ui/Index";
 
@@ -9,32 +9,54 @@ function FormTask() {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm();
 
-  const { createTask } = useTasks();
-
-  const [postErrors, setPostErrors] = useState([]);
-
+  const { createTask, getTask, updateTask, errors: taskErrors } = useTasks();
   const navigate = useNavigate();
 
   const onSubmit = handleSubmit(async (data) => {
-    const res = await createTask(data);
-    if (res) {
-      navigate("/tasks");
+    if (!params.id) {
+      const res = await createTask(data);
+      if (res) {
+        navigate("/tasks");
+      }
+    } else {
+      const task = await updateTask(params.id, data);
+      console.log(task);
+      if (task) {
+        navigate("/tasks");
+      }
     }
   });
+
+  const params = useParams();
+  const title = params.id ? "Edit Task" : "New Task";
+  const button = params.id ? "Update" : "Create";
+
+  useEffect(() => {
+    if (params.id) {
+      getTask(params.id)
+        .then((task) => {
+          setValue("title", task.title);
+          setValue("description", task.description);
+        })
+        .catch((error) => {
+          console.error(error.message);
+        });
+    }
+  }, []);
 
   return (
     <div className="flex h-[80vh] justify-center items-center">
       <Card>
-        { 
-        postErrors.map((error) => (
+        {taskErrors.map((error) => (
           <p key={error} className="bg-red-500 text-center p-2">
-          {error}
-        </p>
+            {error}
+          </p>
         ))}
 
-        <h1 className="text-3xl font-bold my-4">New Task</h1>
+        <h1 className="text-3xl font-bold my-4">{title}</h1>
         <form onSubmit={onSubmit}>
           <Label htmlFor="title">Title</Label>
           <Input
@@ -53,7 +75,7 @@ function FormTask() {
             rows={3}
             {...register("description", { required: false })}
           />
-          <Button>Create</Button>
+          <Button>{button}</Button>
         </form>
       </Card>
     </div>

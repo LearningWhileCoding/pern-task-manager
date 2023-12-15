@@ -1,5 +1,11 @@
 import { createContext, useContext, useState } from "react";
-import { getTasksRequest, createTaskRequest, deleteTaskRequest } from "../api/tasks.api";
+import {
+  getTasksRequest,
+  getTaskRequest,
+  createTaskRequest,
+  updateTaskRequest,
+  deleteTaskRequest,
+} from "../api/tasks.api";
 
 const TasksContext = createContext();
 
@@ -25,36 +31,63 @@ export const TasksProvider = ({ children }) => {
     }
   };
 
+  const getTask = async (id) => {
+    try {
+      const res = await getTaskRequest(id);
+      return res.data;
+    } catch (error) {
+      setErrors([error.response.data.message]);
+      console.error(error.message);
+    }
+  };
+
   const createTask = async (task) => {
     try {
       const res = await createTaskRequest(task);
+      console.log(res);
       setTasks([...tasks, task]);
-      return res.data
+      return res.data;
     } catch (error) {
-      if (error.response.data.errors) {
-        setErrors(error.response.data.errors);
+      if (error.response.data.message) {
+        setErrors([error.response.data.message]);
       }
     }
-  }
+  };
+
+  const updateTask = async (id, task) => {
+    try {
+      const res = await updateTaskRequest(id, task);
+      if (res) {
+        return res;
+      }
+    } catch (error) {
+      setErrors([error.response.data.message]);
+      console.error(error.message);
+    }
+  };
 
   const deleteTask = async (id) => {
     try {
       const res = await deleteTaskRequest(id);
-      if(res.status === 204) {
-        setTasks(tasks.filter(task => task.id !== id));
+      if (res.status === 204) {
+        setTasks(tasks.filter((task) => task.id !== id));
       }
     } catch (error) {
+      setErrors([error.response.data.message]);
       console.error(error.message);
     }
-  }
+  };
 
   return (
     <TasksContext.Provider
       value={{
         tasks,
         getTasks,
+        getTask,
         createTask,
-        deleteTask
+        updateTask,
+        deleteTask,
+        errors,
       }}
     >
       {children}

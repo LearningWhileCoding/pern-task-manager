@@ -17,6 +17,7 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [isAuth, setIsAuth] = useState(false);
   const [errors, setErrors] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const signUp = async (data) => {
     try {
@@ -66,20 +67,34 @@ export function AuthProvider({ children }) {
   };
 
   useEffect(() => {
+    setLoading(true);
     if (cookie.get("token")) {
       axios
         .get("/profile")
         .then((res) => {
           setUser(res.data);
           setIsAuth(true);
+          setLoading(false);
         })
         .catch((error) => {
           setUser(null);
           setIsAuth(false);
+          setLoading(false);
           console.error(error);
         });
     }
+    setLoading(false);
   }, []);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setErrors(null);
+    }, 3000);
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [errors]);
 
   return (
     <AuthContext.Provider
@@ -90,7 +105,8 @@ export function AuthProvider({ children }) {
         signUp,
         setUser,
         signIn,
-        signOut
+        signOut,
+        loading,
       }}
     >
       {children}

@@ -17,7 +17,11 @@ import FormTask from "./components/pages/FormTask";
 import NotFound from "./components/pages/NotFound";
 
 function App() {
-  const { isAuth } = useAuth();
+  const { isAuth, loading } = useAuth();
+  
+  if (loading) {
+      return <h1>Loading...</h1>;
+  }
   return (
     <>
       <Navbar />
@@ -30,7 +34,7 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/signin" element={<SignIn />} />
-          </Route>  
+          </Route>
 
           <Route
             element={<ProtectedRoute isAllowed={isAuth} redirectTo="/signin" />}
