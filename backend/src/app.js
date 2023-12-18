@@ -10,6 +10,10 @@ import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 
+// Config
+import { pool } from "./db.js";
+import { ORIGIN } from "./config.js";
+
 // Create an Express application
 const app = express();
 
@@ -17,7 +21,7 @@ const app = express();
 app.use(morgan("dev"));
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: ORIGIN,
     credentials: true,
   })
 );
@@ -28,6 +32,15 @@ app.use(express.urlencoded({ extended: false }));
 // Define a route for the root URL
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to my Project!" });
+});
+
+app.get("/api/ping", async(req, res) => {
+  try {
+    const response = await pool.query("SELECT NOW()");
+    res.json(response.rows);
+  } catch (err) {
+    console.error(err.message);
+  }
 });
 
 // Mount routes

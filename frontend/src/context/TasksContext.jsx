@@ -44,7 +44,6 @@ export const TasksProvider = ({ children }) => {
   const createTask = async (task) => {
     try {
       const res = await createTaskRequest(task);
-      console.log(res);
       setTasks([...tasks, task]);
       return res.data;
     } catch (error) {

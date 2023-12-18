@@ -23,7 +23,6 @@ function FormTask() {
       }
     } else {
       const task = await updateTask(params.id, data);
-      console.log(task);
       if (task) {
         navigate("/tasks");
       }
